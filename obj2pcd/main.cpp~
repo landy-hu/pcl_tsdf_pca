@@ -1,0 +1,41 @@
+#include <iostream>
+#include <pcl/io/io.h>
+#include <pcl/io/pcd_io.h>
+#include <pcl/io/obj_io.h>
+#include <pcl/console/parse.h>
+#include <pcl/PolygonMesh.h>
+#include <pcl/point_cloud.h>
+#include <pcl/io/vtk_lib_io.h>
+#include <pcl/visualization/pcl_visualizer.h>
+#include <pcl/visualization/cloud_viewer.h>
+
+using namespace std;
+using namespace pcl;
+int main()
+{
+    pcl::PolygonMesh mesh;
+    std::cerr<<"begin loading"<<endl;
+    //pcl::io::loadPolygonFile("model_000081.obj",mesh);
+    pcl::io::loadPolygonFile("/home/lan/Documents/pcl/obj2pcd/model_000081.obj",mesh);
+     /*the normal .obj*/
+    //pcl::io::loadPolygonFile("/home/lan/Downloads/val/03001627/model_000415.obj",mesh);
+    std::cerr<<"end loading"<<endl;
+    
+
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
+    pcl::fromPCLPointCloud2(mesh.cloud, *cloud);
+
+    //pcl::io::savePCDFileASCII("/home/lan/Documents/obj2pcd/model_000081.pcd",*cloud);
+
+    cout<<"size of pointcloud: "<<cloud->size()<<endl;
+    //Visualization
+    pcl::visualization::CloudViewer viewer ("Simple Cloud Viewer");
+    viewer.showCloud (cloud);
+
+    while (!viewer.wasStopped ())
+    {
+
+    }
+    cout<<"OK!";
+    return 0;
+}
